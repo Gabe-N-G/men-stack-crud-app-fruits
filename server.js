@@ -8,27 +8,41 @@ const mongoose = require("mongoose");
 // Import the Fruit model (this determines the model name if not specified)
 const Fruit = require("./models/fruit.js");
 
+//express url encoded parsing middleware for forms.
+app.use(express.urlencoded({ extended: false }));
+
 mongoose.connect(process.env.MONGODB_URI);
 // log connection status to terminal on start
 mongoose.connection.on("connected", () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
 
-
 // GET /
 app.get("/", async (req, res) => {
     res.render("index.ejs");
 });
 
-// server.js
-
 // GET /fruits/new
 app.get("/fruits/new", (req, res) => {
     res.render("fruits/new.ejs");
-    res.send("This route sends the user a form page!");
-  });
+});
+
+// POST /fruits
+app.post("/fruits", async (req, res) => {
+    //if/else translates html on/off to true/false
+    if (req.body.isReadyToEat === "on") {
+        req.body.isReadyToEat = true;
+    } else {
+        req.body.isReadyToEat = false;
+    }
+    //creates an entry into our DB.
+      await Fruit.create(req.body);
+    res.redirect("/fruits/new");
+});
   
+
   
+
 app.listen(3000, () => {
   console.log("In the year 3000");
 });
