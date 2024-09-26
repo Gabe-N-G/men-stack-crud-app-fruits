@@ -37,7 +37,7 @@ app.post("/fruits", async (req, res) => {
     }
     //creates an entry into our DB.
       await Fruit.create(req.body);
-    res.redirect("/fruits/new");
+    res.redirect("/fruits");
 });
 
 // GET /fruits
