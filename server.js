@@ -46,11 +46,15 @@ app.get("/fruits", async (req, res) => {
     res.render("fruits/index.ejs", { fruits: allFruits });
 });
   
-  
+
+//single fruit show page using fruit id.
+app.get("/fruits/:fruitId", async (req, res) => {
+    const foundFruit = await Fruit.findById(req.params.fruitId);
+    res.render("fruits/show.ejs", { fruit: foundFruit });
+});
   
 
-  
-
+  //console log for saying we are connected.
 app.listen(3000, () => {
   console.log("In the year 3000");
 });
