@@ -7,9 +7,13 @@ const app = express();
 const mongoose = require("mongoose");
 // Import the Fruit model (this determines the model name if not specified)
 const Fruit = require("./models/fruit.js");
+const methodOverride = require("method-override");
+const morgan = require("morgan");
 
 //express url encoded parsing middleware for forms.
 app.use(express.urlencoded({ extended: false }));
+app.use(methodOverride("_method"))
+app.use(morgan("dev"))
 
 mongoose.connect(process.env.MONGODB_URI);
 // log connection status to terminal on start
@@ -52,9 +56,15 @@ app.get("/fruits/:fruitId", async (req, res) => {
     const foundFruit = await Fruit.findById(req.params.fruitId);
     res.render("fruits/show.ejs", { fruit: foundFruit });
 });
-  
 
-  //console log for saying we are connected.
+//DELETE ROUTE
+app.delete("/fruits/:fruitId", async (req, res) => {
+  await Fruit.findByIdAndDelete(req.params.fruitId);
+  res.redirect("/fruits");
+});
+
+
+//console log for saying we are connected.
 app.listen(3000, () => {
   console.log("In the year 3000");
 });

@@ -13,7 +13,14 @@
       <% } %>
   </head>
   <body>
-    <h1><%= fruit.name %></h1> <!-- Display fruit name -->
+    <h1><%= fruit.name %></h1> 
+    
+    <form action="/fruits/<%=fruit._id%>?_method=DELETE" method="POST">
+      <button type="submit">Delete <%= fruit.name %></button>
+    </form>
+    <a href="/fruits">Back to Fruits</a>
+    
+    <!-- Display fruit name -->
     <!-- Add more details about the fruit here -->
     <a href="/fruits/">Back to Fruits</a>
   </body>
